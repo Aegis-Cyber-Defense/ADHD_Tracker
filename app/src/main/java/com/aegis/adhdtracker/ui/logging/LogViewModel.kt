@@ -28,11 +28,24 @@ class LogViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
+    private val _hasHealthPermissions = MutableStateFlow(false)
+    val hasHealthPermissions: StateFlow<Boolean> = _hasHealthPermissions.asStateFlow()
+
     private val _aiInsight = MutableStateFlow<String?>(null)
     val aiInsight: StateFlow<String?> = _aiInsight.asStateFlow()
 
     private val _isLoadingInsight = MutableStateFlow(false)
     val isLoadingInsight: StateFlow<Boolean> = _isLoadingInsight.asStateFlow()
+
+    fun checkPermissions() {
+        viewModelScope.launch {
+            _hasHealthPermissions.value = try {
+                healthConnectManager.hasAllPermissions()
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
 
     fun submitLog(food: String, emotion: String, energy: Int) {
         viewModelScope.launch {

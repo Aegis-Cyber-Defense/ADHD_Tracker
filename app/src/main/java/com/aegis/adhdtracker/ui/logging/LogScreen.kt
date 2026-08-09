@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.aegis.adhdtracker.ui.health.HealthPermissionButton
 import kotlin.math.roundToInt
 
 @Composable
@@ -18,10 +19,15 @@ fun LogScreen(
     val logs by viewModel.logsState.collectAsState()
     val aiInsight by viewModel.aiInsight.collectAsState()
     val isLoadingInsight by viewModel.isLoadingInsight.collectAsState()
+    val hasHealthPermissions by viewModel.hasHealthPermissions.collectAsState()
 
     var foodInput by remember { mutableStateOf("") }
     var emotionInput by remember { mutableStateOf("") }
     var energyInput by remember { mutableFloatStateOf(5f) }
+
+    LaunchedEffect(Unit) {
+        viewModel.checkPermissions()
+    }
 
     Column(
         modifier = Modifier
@@ -33,6 +39,38 @@ fun LogScreen(
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+
+        if (!hasHealthPermissions) {
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Sync Galaxy Ring Vitals",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Allow Health Connect access to correlate heart rate and sleep with your daily logs.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    HealthPermissionButton(
+                        onPermissionsGranted = {
+                            viewModel.checkPermissions()
+                        }
+                    )
+                }
+            }
+        }
 
         OutlinedTextField(
             value = foodInput,
