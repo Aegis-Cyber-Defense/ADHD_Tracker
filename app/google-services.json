@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1040201218112",
+    "project_id": "adhd-tracker-e614a",
+    "storage_bucket": "adhd-tracker-e614a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040201218112:android:dc5e0fe89dc0fc535547a5",
+        "android_client_info": {
+          "package_name": "com.aegis.adhdtracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO5JlCpeuEnGNi_dht63LPNgpMshgpTSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
