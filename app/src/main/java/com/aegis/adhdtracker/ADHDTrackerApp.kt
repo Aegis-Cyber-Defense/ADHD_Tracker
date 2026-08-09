@@ -13,17 +13,17 @@ class ADHDTrackerApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Firebase.initialize(this)
-
         if (BuildConfig.DEBUG) {
-            // Force static debug secret into SharedPreferences for development builds
-            val debugSecret = "123e4567-e89b-12d3-a456-426614174000"
+            // Write debug secret token to storage before initializing Firebase
+            val debugSecret = "8f3b2a1c-9d8e-4f7a-b6c5-d4e3f2a10b9c"
             val prefs = getSharedPreferences("com.google.firebase.appcheck.debug.STORE", Context.MODE_PRIVATE)
-            prefs.edit().putString("com.google.firebase.appcheck.debug.DEBUG_SECRET", debugSecret).apply()
+            prefs.edit().putString("com.google.firebase.appcheck.debug.DEBUG_SECRET", debugSecret).commit()
 
             Firebase.appCheck.installAppCheckProviderFactory(
                 DebugAppCheckProviderFactory.getInstance()
             )
         }
+
+        Firebase.initialize(this)
     }
 }
