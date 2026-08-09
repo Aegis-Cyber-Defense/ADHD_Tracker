@@ -8,7 +8,6 @@
         android:minSdkVersion="26"
         android:targetSdkVersion="34" />
 
-    <!-- Health Connect Permissions -->
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
     <uses-permission android:name="android.permission.health.READ_SLEEP" />
     <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
@@ -39,12 +38,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <!-- Health Connect permissions rationale intent filter -->
+        </activity> <!-- Required by Android 14 (API 34) Health Connect framework -->
+        <activity-alias
+            android:name="com.aegis.adhdtracker.ViewPermissionUsageActivity"
+            android:exported="true"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+            android:targetActivity="com.aegis.adhdtracker.MainActivity" >
             <intent-filter>
-                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <service
             android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"

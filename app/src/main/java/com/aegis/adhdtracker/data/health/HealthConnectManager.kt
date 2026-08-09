@@ -16,9 +16,13 @@ import javax.inject.Singleton
 class HealthConnectManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
+    fun getSdkStatus(): Int {
+        return HealthConnectClient.getSdkStatus(context)
+    }
 
     suspend fun hasAllPermissions(): Boolean {
+        if (getSdkStatus() != HealthConnectClient.SDK_AVAILABLE) return false
+        val healthConnectClient = HealthConnectClient.getOrCreate(context)
         val granted = healthConnectClient.permissionController.getGrantedPermissions()
         val required = setOf(
             androidx.health.connect.client.permission.HealthPermission.getReadPermission(HeartRateRecord::class),
@@ -28,6 +32,8 @@ class HealthConnectManager @Inject constructor(
     }
 
     suspend fun readRecentHeartRate(): List<HeartRateRecord> {
+        if (getSdkStatus() != HealthConnectClient.SDK_AVAILABLE) return emptyList()
+        val healthConnectClient = HealthConnectClient.getOrCreate(context)
         val startTime = Instant.now().minus(24, ChronoUnit.HOURS)
         val response = healthConnectClient.readRecords(
             ReadRecordsRequest(
