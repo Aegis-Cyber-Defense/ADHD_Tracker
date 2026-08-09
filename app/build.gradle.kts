@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.aegis.adhdtracker"
-    compileSdk = 34
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.aegis.adhdtracker"
