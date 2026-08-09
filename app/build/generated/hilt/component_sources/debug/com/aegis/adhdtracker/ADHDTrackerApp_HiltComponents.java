@@ -1,6 +1,7 @@
 package com.aegis.adhdtracker;
 
 import com.aegis.adhdtracker.di.DatabaseModule;
+import com.aegis.adhdtracker.di.HealthModule;
 import com.aegis.adhdtracker.ui.logging.LogViewModel_HiltModules;
 import dagger.Binds;
 import dagger.Component;
@@ -130,6 +131,7 @@ public final class ADHDTrackerApp_HiltComponents {
           ServiceCBuilderModule.class,
           ApplicationContextModule.class,
           DatabaseModule.class,
+          HealthModule.class,
           HiltWrapper_FragmentGetContextFix_FragmentGetContextFixModule.class
       }
   )

@@ -13,6 +13,8 @@ import com.aegis.adhdtracker.di.DatabaseModule_ProvideDatabaseFactory;
 import com.aegis.adhdtracker.di.DatabaseModule_ProvideLogDaoFactory;
 import com.aegis.adhdtracker.ui.logging.LogViewModel;
 import com.aegis.adhdtracker.ui.logging.LogViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import dagger.hilt.android.ActivityRetainedLifecycle;
 import dagger.hilt.android.ViewModelLifecycle;
 import dagger.hilt.android.internal.builders.ActivityComponentBuilder;
@@ -32,7 +34,6 @@ import dagger.internal.DaggerGenerated;
 import dagger.internal.DoubleCheck;
 import dagger.internal.Preconditions;
 import dagger.internal.Provider;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.Generated;
@@ -368,7 +369,7 @@ public final class DaggerADHDTrackerApp_HiltComponents_SingletonC {
 
     @Override
     public Set<String> getViewModelKeys() {
-      return Collections.<String>singleton(LogViewModel_HiltModules_KeyModule_ProvideFactory.provide());
+      return ImmutableSet.<String>of(LogViewModel_HiltModules_KeyModule_ProvideFactory.provide());
     }
 
     @Override
@@ -414,12 +415,12 @@ public final class DaggerADHDTrackerApp_HiltComponents_SingletonC {
 
     @Override
     public Map<String, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
-      return Collections.<String, javax.inject.Provider<ViewModel>>singletonMap("com.aegis.adhdtracker.ui.logging.LogViewModel", ((Provider) logViewModelProvider));
+      return ImmutableMap.<String, javax.inject.Provider<ViewModel>>of("com.aegis.adhdtracker.ui.logging.LogViewModel", ((Provider) logViewModelProvider));
     }
 
     @Override
     public Map<String, Object> getHiltViewModelAssistedMap() {
-      return Collections.<String, Object>emptyMap();
+      return ImmutableMap.<String, Object>of();
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
@@ -552,7 +553,7 @@ public final class DaggerADHDTrackerApp_HiltComponents_SingletonC {
 
     @Override
     public Set<Boolean> getDisableFragmentGetContextFix() {
-      return Collections.<Boolean>emptySet();
+      return ImmutableSet.<Boolean>of();
     }
 
     @Override

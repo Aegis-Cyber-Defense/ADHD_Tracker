@@ -20,6 +20,7 @@ import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_compo
 import hilt_aggregated_deps._com_aegis_adhdtracker_ADHDTrackerApp_GeneratedInjector;
 import hilt_aggregated_deps._com_aegis_adhdtracker_MainActivity_GeneratedInjector;
 import hilt_aggregated_deps._com_aegis_adhdtracker_di_DatabaseModule;
+import hilt_aggregated_deps._com_aegis_adhdtracker_di_HealthModule;
 import hilt_aggregated_deps._com_aegis_adhdtracker_ui_logging_LogViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_aegis_adhdtracker_ui_logging_LogViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._dagger_hilt_android_flags_FragmentGetContextFix_FragmentGetContextFixEntryPoint;
@@ -65,6 +66,7 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_Ac
         _com_aegis_adhdtracker_ADHDTrackerApp_GeneratedInjector.class,
         _com_aegis_adhdtracker_MainActivity_GeneratedInjector.class,
         _com_aegis_adhdtracker_di_DatabaseModule.class,
+        _com_aegis_adhdtracker_di_HealthModule.class,
         _com_aegis_adhdtracker_ui_logging_LogViewModel_HiltModules_BindsModule.class,
         _com_aegis_adhdtracker_ui_logging_LogViewModel_HiltModules_KeyModule.class,
         _dagger_hilt_android_flags_FragmentGetContextFix_FragmentGetContextFixEntryPoint.class,
