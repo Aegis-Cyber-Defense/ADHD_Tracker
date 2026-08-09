@@ -57,7 +57,7 @@ dependencies {
     implementation("androidx.health.connect:connect-client:1.1.0-alpha07")
 
     // Firebase & Gemini AI
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
     implementation("com.google.firebase:firebase-ai")
 
     // Room Database
