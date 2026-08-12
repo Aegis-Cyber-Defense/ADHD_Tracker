@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.aegis.adhdtracker.ui.components.EnergyVitalsChart
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,6 +35,13 @@ fun HistoryScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
+        // 7-Day Energy vs Sleep Trend Chart
+        EnergyVitalsChart(
+            logs = logs,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Saturday Review Section Card
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,8 +98,8 @@ fun HistoryScreen(
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(text = dateStr, style = MaterialTheme.typography.labelLarge)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text("Food: ${log.foodIntake}")
-                            Text("Mood: ${log.emotionState}")
+                            Text("Food: ${log.foodIntake ?: "None logged"}")
+                            Text("Mood: ${log.emotionState ?: "None logged"}")
                             Text("Energy: ${log.energyLevel}/10")
                         }
                     }

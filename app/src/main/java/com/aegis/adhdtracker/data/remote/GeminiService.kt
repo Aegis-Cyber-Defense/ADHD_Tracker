@@ -27,7 +27,6 @@ class GeminiService @Inject constructor() {
         val sleepText = vitals.sleepHours?.let { "$it hours" } ?: "Not recorded"
         val hrText = if (vitals.avgHeartRate > 0) "${vitals.avgHeartRate} bpm" else "Not recorded"
 
-        // Combine manual app food entries with Samsung Health nutrition records
         val allFoods = (foodLogs + vitals.samsungHealthFood).filter { it.isNotBlank() }.distinct()
         val foodSummary = if (allFoods.isNotEmpty()) allFoods.joinToString(", ") else "None logged"
 
@@ -43,7 +42,7 @@ class GeminiService @Inject constructor() {
             - Blood Oxygen (SpO2): $spO2Text
             - Sleep Duration: $sleepText
 
-            Analyze how these nutritional and physiological metrics correlate with reported mood, energy, and ADHD focus. Provide 2-3 brief, actionable recovery recommendations under 120 words.
+            Analyze how these physiological metrics correlate with reported mood, energy, and ADHD focus. Provide 2-3 brief, actionable recovery recommendations under 120 words.
             Formatting rule: Output clean plain text with standard numbered points. Do NOT use markdown headers (like ### or ##).
         """.trimIndent()
 
@@ -51,6 +50,32 @@ class GeminiService @Inject constructor() {
         response.text ?: "No insight generated at this time."
     } catch (e: Exception) {
         "Unable to generate AI insight: ${e.localizedMessage}"
+    }
+
+    suspend fun generateMorningBriefing(
+        vitals: HealthMetrics
+    ): String = try {
+        val hrvText = vitals.hrvMs?.let { "${it.toInt()} ms" } ?: "Not recorded"
+        val sleepText = vitals.sleepHours?.let { "$it hours" } ?: "Not recorded"
+
+        val prompt = """
+            You are an empathetic ADHD executive function coach providing a Morning Readiness Briefing based on last night's Galaxy Watch Ultra 2 sleep data:
+
+            - Sleep Duration: $sleepText
+            - Overnight HRV (Stress Balance): $hrvText
+
+            Provide a concise morning briefing answering:
+            1. Projected Energy & Readiness (scale 1-10)
+            2. High-Focus Work Guidance: Should they tackle big deep-work projects today or focus on light maintenance tasks?
+            3. 1 Actionable Tip for executive function pacing today.
+
+            Keep total response under 100 words. Output clean plain text with standard numbered points. Do NOT use markdown headers.
+        """.trimIndent()
+
+        val response = model.generateContent(prompt)
+        response.text ?: "Good morning! Readiness data is currently unavailable."
+    } catch (e: Exception) {
+        "Unable to generate morning briefing: ${e.localizedMessage}"
     }
 
     suspend fun generateWeeklyReview(
