@@ -163,9 +163,9 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\micha\.gradle\cach
 	android:label
 		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:19:9-41
 	android:roundIcon
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:20:9-54
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:20:9-50
 	android:icon
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:18:9-43
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:18:9-45
 	android:allowBackup
 		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:17:9-35
 	android:theme
