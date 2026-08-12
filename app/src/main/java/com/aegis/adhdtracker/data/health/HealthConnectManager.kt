@@ -2,7 +2,6 @@ package com.aegis.adhdtracker.data.health
 
 import android.content.Context
 import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.*
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -18,20 +17,6 @@ class HealthConnectManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
-
-    fun getSdkStatus(): Int {
-        return HealthConnectClient.getSdkStatus(context)
-    }
-
-    suspend fun hasAllPermissions(): Boolean {
-        if (getSdkStatus() != HealthConnectClient.SDK_AVAILABLE) return false
-        val granted = healthConnectClient.permissionController.getGrantedPermissions()
-        val required = setOf(
-            HealthPermission.getReadPermission(HeartRateRecord::class),
-            HealthPermission.getReadPermission(SleepSessionRecord::class)
-        )
-        return granted.containsAll(required)
-    }
 
     suspend fun read24HourVitals(): HealthMetrics {
         val now = Instant.now()
@@ -52,32 +37,48 @@ class HealthConnectManager @Inject constructor(
             )
             val hrvMs = hrvResponse.records.lastOrNull()?.heartRateVariabilityMillis
 
-            // 3. Blood Pressure (Systolic / Diastolic)
+            // 3. Blood Pressure
             val bpResponse = healthConnectClient.readRecords(
                 ReadRecordsRequest(BloodPressureRecord::class, timeRangeFilter = timeRange)
             )
             val bpRecord = bpResponse.records.lastOrNull()
             val bpPair = bpRecord?.let { Pair(it.systolic.inMillimetersOfMercury.toInt(), it.diastolic.inMillimetersOfMercury.toInt()) }
 
-            // 4. Blood Oxygen Saturation (SpO2)
+            // 4. Blood Oxygen (SpO2)
             val spO2Response = healthConnectClient.readRecords(
                 ReadRecordsRequest(OxygenSaturationRecord::class, timeRangeFilter = timeRange)
             )
             val spO2Val = spO2Response.records.lastOrNull()?.percentage?.value
 
-            // 5. Total Sleep Session Duration
+            // 5. Sleep Session Duration
             val sleepResponse = healthConnectClient.readRecords(
                 ReadRecordsRequest(SleepSessionRecord::class, timeRangeFilter = timeRange)
             )
             val totalSleepMinutes = sleepResponse.records.sumOf { ChronoUnit.MINUTES.between(it.startTime, it.endTime) }
             val sleepHours = if (totalSleepMinutes > 0) totalSleepMinutes / 60.0 else null
 
+            // 6. Nutrition Records logged via Samsung Health
+            val nutritionResponse = healthConnectClient.readRecords(
+                ReadRecordsRequest(NutritionRecord::class, timeRangeFilter = timeRange)
+            )
+            val syncedFoods = nutritionResponse.records.mapNotNull { record ->
+                val name = record.name?.ifBlank { null }
+                val kcal = record.energy?.inKilocalories?.toInt()
+                when {
+                    name != null && kcal != null -> "$name ($kcal kcal)"
+                    name != null -> name
+                    kcal != null -> "Meal ($kcal kcal)"
+                    else -> null
+                }
+            }
+
             HealthMetrics(
                 avgHeartRate = avgHr,
                 hrvMs = hrvMs,
                 bloodPressureSysDia = bpPair,
                 spO2Percentage = spO2Val,
-                sleepHours = sleepHours
+                sleepHours = sleepHours,
+                samsungHealthFood = syncedFoods
             )
         } catch (e: Exception) {
             HealthMetrics()

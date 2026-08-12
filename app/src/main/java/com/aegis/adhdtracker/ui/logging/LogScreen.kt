@@ -1,183 +1,131 @@
 package com.aegis.adhdtracker.ui.logging
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aegis.adhdtracker.ui.health.HealthPermissionButton
-import kotlin.math.roundToInt
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun LogScreen(
     viewModel: LogViewModel = hiltViewModel()
 ) {
-    val logs by viewModel.logsState.collectAsState()
+    var foodText by remember { mutableStateOf("") }
+    var emotionText by remember { mutableStateOf("") }
+    var energySlider by remember { mutableFloatStateOf(5f) }
+
     val aiInsight by viewModel.aiInsight.collectAsState()
     val isLoadingInsight by viewModel.isLoadingInsight.collectAsState()
-    val hasHealthPermissions by viewModel.hasHealthPermissions.collectAsState()
+    val logsState by viewModel.logsState.collectAsState()
 
-    var foodInput by remember { mutableStateOf("") }
-    var emotionInput by remember { mutableStateOf("") }
-    var energyInput by remember { mutableFloatStateOf(5f) }
-
-    LaunchedEffect(Unit) {
-        viewModel.checkPermissions()
-    }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Daily ADHD Recovery Tracker",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
+            style = MaterialTheme.typography.headlineMedium
         )
 
-        if (!hasHealthPermissions) {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Sync Galaxy Ring Vitals",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Allow Health Connect access to correlate heart rate and sleep with your daily logs.",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    HealthPermissionButton(
-                        onPermissionsGranted = {
-                            viewModel.checkPermissions()
-                        }
-                    )
-                }
-            }
-        }
-
         OutlinedTextField(
-            value = foodInput,
-            onValueChange = { foodInput = it },
+            value = foodText,
+            onValueChange = { foodText = it },
             label = { Text("Food / Diet Intake") },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
-            value = emotionInput,
-            onValueChange = { emotionInput = it },
+            value = emotionText,
+            onValueChange = { emotionText = it },
             label = { Text("Emotions / Mood") },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Energy Level: ${energyInput.roundToInt()}/10")
+        Text("Energy Level: ${energySlider.toInt()}/10")
         Slider(
-            value = energyInput,
-            onValueChange = { energyInput = it },
+            value = energySlider,
+            onValueChange = { energySlider = it },
             valueRange = 1f..10f,
             steps = 8
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(
-                onClick = { viewModel.fetchAiRecoveryInsight() },
-                enabled = !isLoadingInsight
+                onClick = {
+                    viewModel.fetchAiRecoveryInsight()
+                },
+                modifier = Modifier.weight(1f)
             ) {
-                if (isLoadingInsight) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Text("Get Gemini Insights")
-                }
+                Text(if (isLoadingInsight) "Analyzing..." else "Get Gemini Insights")
             }
 
             Button(
                 onClick = {
-                    if (foodInput.isNotBlank() || emotionInput.isNotBlank()) {
-                        viewModel.submitLog(
-                            food = foodInput,
-                            emotion = emotionInput,
-                            energy = energyInput.roundToInt()
-                        )
-                        foodInput = ""
-                        emotionInput = ""
-                    }
-                }
+                    viewModel.submitLog(foodText, emotionText, energySlider.toInt())
+                    foodText = ""
+                    emotionText = ""
+                },
+                modifier = Modifier.weight(1f)
             ) {
                 Text("Save Entry")
             }
         }
 
-        aiInsight?.let { insightText ->
-            Spacer(modifier = Modifier.height(16.dp))
+        if (aiInsight.orEmpty().isNotBlank()) {
             Card(
+                modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                ),
-                modifier = Modifier.fillMaxWidth()
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "Gemini Recovery Insight",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = insightText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        text = aiInsight.orEmpty(),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
         }
 
-        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+        if (logsState.isNotEmpty()) {
+            Text(
+                text = "Recent Logs",
+                style = MaterialTheme.typography.titleLarge
+            )
 
-        Text(
-            text = "Recent Logs",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(logs) { log ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text(text = "Food: ${log.foodIntake}")
-                        Text(text = "Emotion: ${log.emotionState}")
-                        Text(text = "Energy Level: ${log.energyLevel}/10")
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                logsState.take(5).forEach { log ->
+                    val dateStr = SimpleDateFormat("EEE, MMM d", Locale.getDefault()).format(Date(log.timestamp))
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(text = dateStr, style = MaterialTheme.typography.labelMedium)
+                            Text("Food: ${log.foodIntake ?: "None logged"}")
+                            Text("Mood: ${log.emotionState ?: "None logged"}")
+                            Text("Energy: ${log.energyLevel}/10")
+                        }
                     }
                 }
             }

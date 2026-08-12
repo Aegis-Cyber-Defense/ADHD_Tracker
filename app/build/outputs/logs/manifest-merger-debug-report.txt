@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-36:12
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:1-31:12
 MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\micha\.gradle\caches\transforms-3\39afa7eefc17b63cc6d42f7dee7588a1\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.health.connect:connect-client:1.1.0-alpha07] C:\Users\micha\.gradle\caches\transforms-3\69399bec2115c77208fff90d36ba7474\transformed\connect-client-1.1.0-alpha07\AndroidManifest.xml:17:1-35:12
 MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\micha\.gradle\caches\transforms-3\c7af686c14cdda929755c2b3a5d7dc89\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
@@ -88,16 +88,32 @@ MERGED from [com.google.dagger:dagger-lint-aar:2.50] C:\Users\micha\.gradle\cach
 	xmlns:android
 		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.health.READ_HEART_RATE
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:4:5-81
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:5:5-81
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:4:22-78
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:5:22-78
+uses-permission#android.permission.health.READ_HEART_RATE_VARIABILITY
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:6:5-93
+	android:name
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:6:22-90
+uses-permission#android.permission.health.READ_BLOOD_PRESSURE
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:7:5-85
+	android:name
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:7:22-82
+uses-permission#android.permission.health.READ_OXYGEN_SATURATION
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:8:5-88
+	android:name
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:8:22-85
 uses-permission#android.permission.health.READ_SLEEP
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:5:5-76
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:9:5-76
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:5:22-73
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:9:22-73
+uses-permission#android.permission.health.READ_NUTRITION
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:10:5-80
+	android:name
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:10:22-77
 application
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:7:5-35:19
-INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:7:5-35:19
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:12:5-29:19
+INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:12:5-29:19
 MERGED from [androidx.health.connect:connect-client:1.1.0-alpha07] C:\Users\micha\.gradle\caches\transforms-3\69399bec2115c77208fff90d36ba7474\transformed\connect-client-1.1.0-alpha07\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.health.connect:connect-client:1.1.0-alpha07] C:\Users\micha\.gradle\caches\transforms-3\69399bec2115c77208fff90d36ba7474\transformed\connect-client-1.1.0-alpha07\AndroidManifest.xml:23:5-33:19
 MERGED from [com.google.firebase:firebase-appcheck-debug:19.4.0] C:\Users\micha\.gradle\caches\transforms-3\4c8052f5ad65fc5de28c28e8cd6e65f6\transformed\firebase-appcheck-debug-19.4.0\AndroidManifest.xml:21:5-29:19
@@ -139,51 +155,37 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\micha\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\micha\.gradle\caches\transforms-3\953a76f40bfccbc85c20f53e5cb09a3c\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:11:9-35
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:18:9-35
 	android:label
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:10:9-37
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:16:9-41
+	android:roundIcon
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:17:9-54
+	android:icon
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:15:9-43
 	android:allowBackup
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:9:9-35
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:14:9-35
 	android:theme
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:12:9-72
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:19:9-49
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:8:9-39
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:13:9-39
 activity#com.aegis.adhdtracker.MainActivity
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:14:9-21:20
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:20:9-28:20
 	android:exported
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:16:13-36
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:22:13-36
+	android:theme
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:23:13-53
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:15:13-41
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:21:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:17:13-20:29
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:24:13-27:29
 action#android.intent.action.MAIN
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:18:17-69
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:25:17-69
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:18:25-66
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:25:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:19:17-77
+ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:19:27-74
-activity-alias#com.aegis.adhdtracker.ViewPermissionUsageActivity
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:24:9-33:26
-	android:exported
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:26:13-36
-	android:targetActivity
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:27:13-51
-	android:permission
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:28:13-80
-	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:25:13-55
-intent-filter#action:name:android.intent.action.VIEW_PERMISSION_USAGE+category:name:android.intent.category.HEALTH_PERMISSIONS
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:29:13-32:29
-action#android.intent.action.VIEW_PERMISSION_USAGE
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:30:17-86
-	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:30:25-83
-category#android.intent.category.HEALTH_PERMISSIONS
-ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:31:17-87
-	android:name
-		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:31:27-84
+		ADDED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml:26:27-74
 uses-sdk
 INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Development\ADHDTracker\app\src\main\AndroidManifest.xml
