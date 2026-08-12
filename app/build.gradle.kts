@@ -86,8 +86,8 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.2.0")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
 
-    // Firebase AI Logic
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    // Firebase AI Logic (Updated BoM version)
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
     implementation("com.google.firebase:firebase-ai")
 
     // Testing
