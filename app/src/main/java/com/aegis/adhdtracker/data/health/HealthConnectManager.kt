@@ -2,6 +2,7 @@ package com.aegis.adhdtracker.data.health
 
 import android.content.Context
 import androidx.health.connect.client.HealthConnectClient
+import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.*
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -17,6 +18,24 @@ class HealthConnectManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
+
+    val REQUIRED_PERMISSIONS = setOf(
+        HealthPermission.getReadPermission(HeartRateRecord::class),
+        HealthPermission.getReadPermission(HeartRateVariabilityRmssdRecord::class),
+        HealthPermission.getReadPermission(BloodPressureRecord::class),
+        HealthPermission.getReadPermission(OxygenSaturationRecord::class),
+        HealthPermission.getReadPermission(SleepSessionRecord::class),
+        HealthPermission.getReadPermission(NutritionRecord::class)
+    )
+
+    suspend fun hasAllPermissions(): Boolean {
+        return try {
+            val granted = healthConnectClient.permissionController.getGrantedPermissions()
+            granted.containsAll(REQUIRED_PERMISSIONS)
+        } catch (e: Exception) {
+            false
+        }
+    }
 
     suspend fun read24HourVitals(): HealthMetrics {
         val now = Instant.now()
