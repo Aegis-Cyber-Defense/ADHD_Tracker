@@ -57,17 +57,7 @@ class LogViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoadingInsight.value = true
             val currentLogs = logsState.value
-            val heartRates = try {
-                healthConnectManager.readRecentHeartRate()
-            } catch (e: Exception) {
-                emptyList()
-            }
-
-            val avgHeartRate = if (heartRates.isNotEmpty()) {
-                heartRates.flatMap { it.samples }.map { it.beatsPerMinute }.average().toInt()
-            } else {
-                0
-            }
+            val vitals = healthConnectManager.read24HourVitals()
 
             val foodList = currentLogs.map { it.foodIntake }.filter { it.isNotBlank() }
             val emotionList = currentLogs.map { it.emotionState }.filter { it.isNotBlank() }
@@ -77,7 +67,7 @@ class LogViewModel @Inject constructor(
                 foodLogs = foodList,
                 emotionLogs = emotionList,
                 energyLevels = energyList,
-                avgHeartRate = avgHeartRate
+                vitals = vitals
             )
 
             _aiInsight.value = insight

@@ -1,5 +1,6 @@
 package com.aegis.adhdtracker.data.remote
 
+import com.aegis.adhdtracker.data.model.HealthMetrics
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
@@ -17,16 +18,27 @@ class GeminiService @Inject constructor() {
         foodLogs: List<String>,
         emotionLogs: List<String>,
         energyLevels: List<Int>,
-        avgHeartRate: Int
+        vitals: HealthMetrics
     ): String = try {
-        val prompt = """
-            You are an empathetic, concise ADHD recovery coach. Analyze this daily health data:
-            - Foods Consumed: ${foodLogs.joinToString(", ")}
-            - Moods/Emotions: ${emotionLogs.joinToString(", ")}
-            - Recorded Energy Levels: ${energyLevels.joinToString(", ")}/10
-            - Galaxy Ring Avg Heart Rate (24h): ${if (avgHeartRate > 0) "$avgHeartRate bpm" else "No vitals recorded"}
+        val bpText = vitals.bloodPressureSysDia?.let { "${it.first}/${it.second} mmHg" } ?: "Not recorded"
+        val hrvText = vitals.hrvMs?.let { "${it.toInt()} ms" } ?: "Not recorded"
+        val spO2Text = vitals.spO2Percentage?.let { "${it.toInt()}%" } ?: "Not recorded"
+        val sleepText = vitals.sleepHours?.let { "$it hours" } ?: "Not recorded"
+        val hrText = if (vitals.avgHeartRate > 0) "${vitals.avgHeartRate} bpm" else "Not recorded"
 
-            Provide 2 short, actionable observations on how food and vitals might be impacting mood and focus. Keep recommendations clear and under 100 words.
+        val prompt = """
+            You are an empathetic, expert ADHD recovery coach analyzing daily health data from a Galaxy Watch Ultra 2:
+
+            - Food Intake: ${foodLogs.ifEmpty { listOf("None logged") }.joinToString(", ")}
+            - Mood/Emotions: ${emotionLogs.ifEmpty { listOf("None logged") }.joinToString(", ")}
+            - Energy Rating: ${energyLevels.ifEmpty { listOf(5) }.joinToString(", ")}/10
+            - Avg Heart Rate: $hrText
+            - Heart Rate Variability (HRV): $hrvText
+            - Blood Pressure: $bpText
+            - Blood Oxygen (SpO2): $spO2Text
+            - Sleep Duration: $sleepText
+
+            Analyze how these physiological metrics correlate with reported mood, energy, and ADHD focus. Provide 2-3 brief, actionable recovery recommendations under 120 words.
         """.trimIndent()
 
         val response = model.generateContent(prompt)
