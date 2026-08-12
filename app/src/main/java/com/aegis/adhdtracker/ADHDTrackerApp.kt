@@ -1,16 +1,42 @@
 package com.aegis.adhdtracker
 
 import android.app.Application
-import com.google.firebase.Firebase
-import com.google.firebase.initialize
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.*
+import com.aegis.adhdtracker.worker.MorningReadinessWorker
 import dagger.hilt.android.HiltAndroidApp
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltAndroidApp
-class ADHDTrackerApp : Application() {
+class ADHDTrackerApp : Application(), Configuration.Provider {
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
     override fun onCreate() {
         super.onCreate()
+        scheduleMorningBriefingWorker()
+    }
 
-        // Initialize Firebase services cleanly without sending unverified debug tokens
-        Firebase.initialize(this)
+    private fun scheduleMorningBriefingWorker() {
+        val workRequest = PeriodicWorkRequestBuilder<MorningReadinessWorker>(24, TimeUnit.HOURS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiresBatteryNotLow(true)
+                    .build()
+            )
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "MorningReadinessWork",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 }
